@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Théo Bugli — E-Portfolio BUT R&T</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0c0e14;
+    --bg2:#131520;
+    --bg3:#1a1d2e;
+    --card:#1e2133;
+    --border:#2a2f4a;
+    --accent:#4f6ef7;
+    --accent2:#7c3aed;
+    --teal:#0ea5a0;
+    --coral:#f97066;
+    --text:#eef0f8;
+    --muted:#8892b0;
+    --dim:#4a5280;
+    --font:'Space Grotesk',sans-serif;
+    --mono:'Space Mono',monospace;
+  }
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:16px;line-height:1.7;min-height:100vh}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(12,14,20,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 2rem}
+  .nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px}
+  .nav-brand{font-family:var(--mono);font-size:14px;color:var(--accent);letter-spacing:.05em}
+  .nav-links{display:flex;gap:.25rem}
+  .nav-links button{background:none;border:none;cursor:pointer;color:var(--muted);font-family:var(--font);font-size:14px;padding:.4rem .8rem;border-radius:6px;transition:all .2s}
+  .nav-links button:hover{color:var(--text);background:var(--bg3)}
+  .nav-links button.active{color:var(--accent);background:rgba(79,110,247,.12)}
+
+  /* PAGES */
+  .page{display:none;max-width:1100px;margin:0 auto;padding:80px 2rem 4rem}
+  .page.active{display:block}
+
+  /* HERO */
+  .hero{min-height:calc(100vh - 60px);display:flex;flex-direction:column;justify-content:center;padding-top:2rem}
+  .hero-tag{font-family:var(--mono);font-size:13px;color:var(--teal);letter-spacing:.1em;margin-bottom:1.5rem}
+  .hero h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:600;line-height:1.1;margin-bottom:1.5rem}
+  .hero h1 span{color:var(--accent)}
+  .hero-sub{font-size:1.15rem;color:var(--muted);max-width:540px;margin-bottom:2.5rem}
+  .hero-badges{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:3rem}
+  .badge{font-size:12px;font-family:var(--mono);padding:.35rem .8rem;border-radius:20px;border:1px solid}
+  .badge-adm{border-color:var(--accent);color:var(--accent);background:rgba(79,110,247,.08)}
+  .badge-conn{border-color:var(--teal);color:var(--teal);background:rgba(14,165,160,.08)}
+  .badge-prog{border-color:var(--coral);color:var(--coral);background:rgba(249,112,102,.08)}
+  .btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;border:none;padding:.75rem 1.5rem;border-radius:8px;font-family:var(--font);font-size:14px;font-weight:500;cursor:pointer;transition:all .2s}
+  .btn-primary:hover{background:#3d5ce0;transform:translateY(-1px)}
+  .hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;max-width:500px}
+  .stat{background:var(--card);padding:1.25rem 1.5rem}
+  .stat-num{font-size:1.8rem;font-weight:600;font-family:var(--mono);color:var(--accent)}
+  .stat-label{font-size:12px;color:var(--muted);margin-top:.2rem}
+
+  /* SECTION HEADERS */
+  .section-eyebrow{font-family:var(--mono);font-size:12px;color:var(--teal);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem}
+  .section-title{font-size:clamp(1.5rem,3vw,2rem);font-weight:600;margin-bottom:.5rem}
+  .section-desc{color:var(--muted);margin-bottom:2.5rem;max-width:600px}
+
+  /* COMPETENCES */
+  .comp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-bottom:3rem}
+  .comp-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem;position:relative;overflow:hidden;cursor:pointer;transition:all .25s}
+  .comp-card:hover{border-color:var(--accent);transform:translateY(-3px)}
+  .comp-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+  .comp-card.adm::before{background:var(--accent)}
+  .comp-card.conn::before{background:var(--teal)}
+  .comp-card.prog::before{background:var(--coral)}
+  .comp-num{font-family:var(--mono);font-size:11px;color:var(--dim);margin-bottom:.5rem}
+  .comp-name{font-size:1.15rem;font-weight:600;margin-bottom:.75rem}
+  .comp-desc{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:1.25rem}
+  .comp-ue{font-size:13px;font-family:var(--mono);padding:.2rem .6rem;border-radius:4px;display:inline-block}
+  .comp-ue.adm{background:rgba(79,110,247,.12);color:var(--accent)}
+  .comp-ue.conn{background:rgba(14,165,160,.12);color:var(--teal)}
+  .comp-ue.prog{background:rgba(249,112,102,.12);color:var(--coral)}
+  .comp-more{margin-top:1.25rem;font-size:13px;font-family:var(--mono);color:var(--dim);display:flex;align-items:center;gap:.4rem}
+
+  /* SAE */
+  .sae-semester{margin-bottom:3rem}
+  .semester-label{font-family:var(--mono);font-size:12px;color:var(--dim);border:1px solid var(--border);display:inline-block;padding:.3rem .8rem;border-radius:4px;margin-bottom:1.5rem}
+  .sae-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1rem}
+  .sae-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all .25s;position:relative}
+  .sae-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .sae-header{display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem;margin-bottom:.75rem}
+  .sae-id{font-family:var(--mono);font-size:11px;color:var(--dim)}
+  .sae-grade{font-family:var(--mono);font-size:14px;font-weight:700;padding:.2rem .6rem;border-radius:6px;background:rgba(79,110,247,.15);color:var(--accent)}
+  .sae-grade.good{background:rgba(14,165,160,.15);color:var(--teal)}
+  .sae-grade.na{background:var(--bg3);color:var(--dim)}
+  .sae-title{font-size:15px;font-weight:500;margin-bottom:.5rem}
+  .sae-desc{font-size:13px;color:var(--muted);line-height:1.5}
+  .sae-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1rem}
+  .sae-tag{font-size:11px;padding:.2rem .5rem;border-radius:4px;background:var(--bg3);color:var(--dim)}
+
+  /* MODAL */
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(8,9,14,.7);backdrop-filter:blur(4px);z-index:1000;align-items:center;justify-content:center;padding:1.5rem}
+  .modal-overlay.open{display:flex}
+  .modal-box{background:var(--bg2);border:1px solid var(--border);border-radius:16px;max-width:680px;width:100%;max-height:85vh;overflow-y:auto;padding:2rem;position:relative}
+  .modal-close{position:absolute;top:1.25rem;right:1.25rem;background:var(--bg3);border:1px solid var(--border);color:var(--muted);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+  .modal-close:hover{color:var(--text);border-color:var(--accent)}
+  .modal-eyebrow{font-family:var(--mono);font-size:11px;color:var(--teal);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem}
+  .modal-title{font-size:1.5rem;font-weight:600;margin-bottom:.75rem;padding-right:2rem}
+  .modal-desc{color:var(--muted);font-size:14px;margin-bottom:1.5rem}
+  .modal-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:1.5rem}
+  .modal-table th{text-align:left;color:var(--dim);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.05em;padding:.5rem .75rem;border-bottom:1px solid var(--border)}
+  .modal-table td{padding:.6rem .75rem;border-bottom:1px solid var(--border);color:var(--text)}
+  .modal-table tr:last-child td{border-bottom:none}
+  .modal-table .num{font-family:var(--mono);text-align:right;color:var(--accent)}
+  .modal-section-label{font-size:13px;font-weight:500;color:var(--muted);margin:1.5rem 0 .75rem}
+  .modal-list{list-style:none;font-size:14px;color:var(--muted)}
+  .modal-list li{padding:.4rem 0;display:flex;gap:.6rem}
+  .modal-list li::before{content:'→';color:var(--teal);flex-shrink:0}
+  .modal-meta{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1.5rem}
+  .modal-deliv{background:var(--bg3);border-radius:10px;padding:1rem;margin-bottom:.75rem}
+  .modal-deliv-title{font-size:13px;font-weight:500;margin-bottom:.25rem}
+  .modal-deliv-desc{font-size:13px;color:var(--muted)}
+
+  /* AC PAGE */
+  .ac-comp-block{margin-bottom:2.5rem}
+  .ac-comp-header{display:flex;align-items:center;gap:.75rem;margin-bottom:1rem}
+  .ac-comp-pill{font-family:var(--mono);font-size:11px;padding:.3rem .7rem;border-radius:6px}
+  .ac-comp-pill.adm{background:rgba(79,110,247,.15);color:var(--accent)}
+  .ac-comp-pill.conn{background:rgba(14,165,160,.15);color:var(--teal)}
+  .ac-comp-pill.prog{background:rgba(249,112,102,.15);color:var(--coral)}
+  .ac-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.75rem}
+  .ac-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.1rem}
+  .ac-code{font-family:var(--mono);font-size:11px;color:var(--dim);margin-bottom:.4rem}
+  .ac-text{font-size:13px;color:var(--text);line-height:1.5}
+  .ac-linked{font-size:11px;color:var(--muted);margin-top:.5rem;font-family:var(--mono)}
+
+  /* RESSOURCE SUBSECTIONS IN MODAL */
+  .res-detail{background:var(--bg3);border-radius:10px;padding:1rem;margin-bottom:.6rem}
+  .res-detail-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.4rem}
+  .res-detail-name{font-size:13px;font-weight:500}
+  .res-detail-code{font-family:var(--mono);font-size:11px;color:var(--dim)}
+  .res-detail-text{font-size:13px;color:var(--muted);line-height:1.5}
+  .res-detail-use{font-size:12px;color:var(--teal);margin-top:.4rem;display:flex;gap:.4rem}
+  .res-detail-use::before{content:'⚙';flex-shrink:0}
+
+  /* RESSOURCES & AC LIST IN SAE MODAL */
+  .sae-meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+  @media(max-width:560px){.sae-meta-grid{grid-template-columns:1fr}}
+  .sae-meta-box{background:var(--bg3);border-radius:10px;padding:.9rem}
+  .sae-meta-label{font-family:var(--mono);font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem}
+  .sae-meta-item{font-size:12px;color:var(--text);padding:.25rem 0;display:flex;gap:.4rem}
+  .sae-meta-item .code{font-family:var(--mono);color:var(--accent);flex-shrink:0;min-width:48px}
+
+  /* SKILLS */
+  .skills-section{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem}
+  .skill-group{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem}
+  .skill-group-title{font-size:14px;font-weight:500;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+  .skill-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px}
+  .skill-item{display:flex;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--border);font-size:14px;color:var(--text)}
+  .skill-item:last-child{border-bottom:none}
+  .skill-item::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--dim);margin-right:.6rem;flex-shrink:0}
+
+  /* ABOUT */
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+  @media(max-width:700px){.about-grid{grid-template-columns:1fr}}
+  .about-avatar{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-weight:600;color:#fff;margin-bottom:1.5rem;font-family:var(--mono);overflow:hidden}
+  .about-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+  .about-name{font-size:1.5rem;font-weight:600;margin-bottom:.25rem}
+  .about-role{color:var(--teal);font-size:14px;font-family:var(--mono);margin-bottom:1rem}
+  .about-text{color:var(--muted);font-size:15px;line-height:1.7;margin-bottom:1.5rem}
+  .info-list{list-style:none}
+  .info-list li{display:flex;gap:.75rem;align-items:center;font-size:14px;color:var(--muted);padding:.4rem 0;border-bottom:1px solid var(--border)}
+  .info-list li:last-child{border-bottom:none}
+  .info-key{color:var(--dim);font-family:var(--mono);font-size:12px;min-width:90px}
+  .about-right{}
+  .timeline{position:relative;padding-left:1.5rem}
+  .timeline::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:1px;background:var(--border)}
+  .tl-item{position:relative;margin-bottom:1.75rem}
+  .tl-dot{position:absolute;left:-1.5rem;top:6px;width:8px;height:8px;border-radius:50%;background:var(--accent);border:2px solid var(--bg);transform:translateX(-3.5px)}
+  .tl-period{font-family:var(--mono);font-size:11px;color:var(--dim);margin-bottom:.2rem}
+  .tl-title{font-size:15px;font-weight:500;margin-bottom:.2rem}
+  .tl-sub{font-size:13px;color:var(--muted)}
+
+  /* FOOTER */
+  footer{text-align:center;padding:2rem;border-top:1px solid var(--border);color:var(--dim);font-size:13px;font-family:var(--mono)}
+
+  /* RESPONSIVE NAV */
+  @media(max-width:600px){
+    .nav-links button{font-size:12px;padding:.35rem .55rem}
+    .hero h1{font-size:2rem}
+    .hero-stats{grid-template-columns:repeat(3,1fr)}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <span class="nav-brand">tb.portfolio</span>
+    <div class="nav-links">
+      <button class="active" onclick="showPage('home')">Accueil</button>
+      <button onclick="showPage('competences')">Compétences</button>
+      <button onclick="showPage('sae')">SAÉ</button>
+      <button onclick="showPage('ac')">Apprentissages Critiques</button>
+      <button onclick="showPage('skills')">Outils</button>
+      <button onclick="showPage('about')">À propos</button>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE ACCUEIL -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <p class="hero-tag">// BUT Réseaux &amp; Télécommunications · 2025–2026</p>
+    <h1>Théo <span>Bugli</span><br>Étudiant R&amp;T</h1>
+    <p class="hero-sub">Passionné par les réseaux, la programmation et les systèmes. En formation BUT R&amp;T à l'IUT de Colmar — promo RT112.</p>
+    <div class="hero-badges">
+      <span class="badge badge-adm">UE1 · Administrer</span>
+      <span class="badge badge-conn">UE2 · Connecter</span>
+      <span class="badge badge-prog">UE3 · Programmer</span>
+    </div>
+    <button class="btn-primary" onclick="showPage('competences')">Voir mes compétences →</button>
+    <div style="margin-top:3rem">
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-num">11.01</div><div class="stat-label">Moy. S1</div></div>
+        <div class="stat"><div class="stat-num">8.71</div><div class="stat-label">Moy. S2</div></div>
+        <div class="stat"><div class="stat-num">21/30</div><div class="stat-label">ECTS S1</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE COMPÉTENCES -->
+<div class="page" id="page-competences">
+  <p class="section-eyebrow">Formation</p>
+  <h2 class="section-title">Mes 3 compétences BUT R&amp;T</h2>
+  <p class="section-desc">Le BUT R&amp;T s'organise autour de trois compétences cœur de métier, validées par unité d'enseignement sur chaque semestre. Clique sur une compétence pour voir le détail des ressources et modules associés.</p>
+
+  <div class="comp-grid">
+    <div class="comp-card adm" onclick="openModal('comp-adm')">
+      <div class="comp-num">UE1 / Compétence 1</div>
+      <div class="comp-name">Administrer les réseaux et l'Internet</div>
+      <p class="comp-desc">Concevoir, déployer et maintenir des infrastructures réseau locales et étendues. Couvre les équipements actifs, les systèmes d'exploitation et la cybersécurité.</p>
+      <span class="comp-ue adm">UE1.1 · UE2.1</span>
+      <div class="comp-more">voir le détail →</div>
+    </div>
+
+    <div class="comp-card conn" onclick="openModal('comp-conn')">
+      <div class="comp-num">UE2 / Compétence 2</div>
+      <div class="comp-name">Connecter les entreprises et les usagers</div>
+      <p class="comp-desc">Mettre en œuvre les supports de transmission, les technologies radio et filaires, et connecter des entreprises aux réseaux opérateurs.</p>
+      <span class="comp-ue conn">UE1.2 · UE2.2</span>
+      <div class="comp-more">voir le détail →</div>
+    </div>
+
+    <div class="comp-card prog" onclick="openModal('comp-prog')">
+      <div class="comp-num">UE3 / Compétence 3</div>
+      <div class="comp-name">Créer des outils et applications pour les R&amp;T</div>
+      <p class="comp-desc">Développer des applications web, des scripts d'automatisation et des outils de traitement de données adaptés aux environnements R&amp;T.</p>
+      <span class="comp-ue prog">UE1.3 · UE2.3</span>
+      <div class="comp-more">voir le détail →</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE SAÉ -->
+<div class="page" id="page-sae">
+  <p class="section-eyebrow">Situations d'Apprentissage et d'Évaluation</p>
+  <h2 class="section-title">Mes SAÉ</h2>
+  <p class="section-desc">Projets pratiques réalisés au fil des semestres, validant les apprentissages critiques de chaque compétence. Clique sur une carte pour voir le projet en détail.</p>
+
+  <div class="sae-semester">
+    <span class="semester-label">SEMESTRE 1 — 2025</span>
+    <div class="sae-grid">
+
+      <div class="sae-card" onclick="openModal('sae101')">
+        <div class="sae-header">
+          <span class="sae-id">SAÉ 1.01</span>
+          <span class="sae-grade good">14.00</span>
+        </div>
+        <div class="sae-title">Hygiène informatique et cybersécurité</div>
+        <p class="sae-desc">Sensibilisation aux bonnes pratiques de sécurité informatique : mots de passe, mises à jour, phishing, gestion des accès.</p>
+        <div class="sae-tags"><span class="sae-tag">Administrer</span><span class="sae-tag">Sécurité</span></div>
+      </div>
+
+      <div class="sae-card" onclick="openModal('sae102')">
+        <div class="sae-header">
+          <span class="sae-id">SAÉ 1.02</span>
+          <span class="sae-grade">10.08</span>
+        </div>
+        <div class="sae-title">S'initier aux réseaux informatiques</div>
+        <p class="sae-desc">Mise en place et configuration d'un réseau local simple : adressage IP, switch, routage de base et outils de diagnostic.</p>
+        <div class="sae-tags"><span class="sae-tag">Administrer</span><span class="sae-tag">LAN</span><span class="sae-tag">Cisco</span></div>
+      </div>
+
+      <div class="sae-card" onclick="openModal('sae103')">
+        <div class="sae-header">
+          <span class="sae-id">SAÉ 1.03</span>
+          <span class="sae-grade">11.52</span>
+        </div>
+        <div class="sae-title">Découvrir un dispositif de transmission</div>
+        <p class="sae-desc">Étude et mesure d'un système de transmission : analyse du signal, caractérisation d'un câble ou d'un lien radio.</p>
+        <div class="sae-tags"><span class="sae-tag">Connecter</span><span class="sae-tag">Signal</span><span class="sae-tag">Mesures</span></div>
+      </div>
+
+      <div class="sae-card" onclick="openModal('sae104')">
+        <div class="sae-header">
+          <span class="sae-id">SAÉ 1.04</span>
+          <span class="sae-grade good">15.00</span>
+        </div>
+        <div class="sae-title">Se présenter sur Internet — CV Web</div>
+        <p class="sae-desc">Création d'un site web multi-pages de CV en HTML/CSS avec navigation par ancres, flexbox, responsive et feuille de style unique.</p>
+        <div class="sae-tags"><span class="sae-tag">Programmer</span><span class="sae-tag">HTML</span><span class="sae-tag">CSS</span><span class="sae-tag">Codepen</span></div>
+      </div>
+
+      <div class="sae-card" onclick="openModal('sae105')">
+        <div class="sae-header">
+          <span class="sae-id">SAÉ 1.05</span>
+          <span class="sae-grade good">15.50</span>
+        </div>
+        <div class="sae-title">Traiter des données — Reporting Python</div>
+        <p class="sae-desc">Développement d'un outil de reporting en Python/PyQt5 pour localiser les gros fichiers d'un disque : camembert interactif, légendes paginées, script PowerShell de suppression.</p>
+        <div class="sae-tags"><span class="sae-tag">Programmer</span><span class="sae-tag">Python</span><span class="sae-tag">PyQt5</span><span class="sae-tag">PowerShell</span><span class="sae-tag">JSON</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="sae-semester">
+    <span class="semester-label">SEMESTRE 2 — 2026</span>
+    <div class="sae-grid">
+
+      <div class="sae-card" onclick="openModal('sae201')">
+        <div class="sae-header">
+          <span class="sae-id">SAÉ 2.01</span>
+          <span class="sae-grade na">En cours</span>
+        </div>
+        <div class="sae-title">Construire un réseau pour une petite structure</div>
+        <p class="sae-desc">Conception et déploiement d'une infrastructure réseau complète pour une PME : routage, VLAN, services réseau essentiels.</p>
+        <div class="sae-tags"><span class="sae-tag">Administrer</span><span class="sae-tag">Connecter</span><span class="sae-tag">VLAN</span></div>
+      </div>
+
+      <div class="sae-card" onclick="openModal('sae202')">
+        <div class="sae-header">
+          <span class="sae-id">SAÉ 2.02</span>
+          <span class="sae-grade na">En cours</span>
+        </div>
+        <div class="sae-title">Mesurer et caractériser un signal</div>
+        <p class="sae-desc">Utilisation d'instruments de mesure pour caractériser un signal ou un système de transmission. Analyse fréquentielle et temporelle.</p>
+        <div class="sae-tags"><span class="sae-tag">Connecter</span><span class="sae-tag">Signal</span><span class="sae-tag">Oscilloscope</span></div>
+      </div>
+
+      <div class="sae-card" style="border-color:rgba(79,110,247,.4)" onclick="openModal('sae203')">
+        <div class="sae-header">
+          <span class="sae-id">SAÉ 2.03 ★</span>
+          <span class="sae-grade na">En cours</span>
+        </div>
+        <div class="sae-title">Solution informatique pour l'entreprise</div>
+        <p class="sae-desc">Projet de groupe (3 étudiants) : déploiement d'un site web avec base de données sur VM Linux. Conception, développement, GitHub, Gantt et documentation d'installation.</p>
+        <div class="sae-tags"><span class="sae-tag">Programmer</span><span class="sae-tag">Linux</span><span class="sae-tag">MySQL</span><span class="sae-tag">PHP/Web</span><span class="sae-tag">GitHub</span><span class="sae-tag">VM</span></div>
+      </div>
+
+      <div class="sae-card" onclick="openModal('sae204')">
+        <div class="sae-header">
+          <span class="sae-id">SAÉ 2.04</span>
+          <span class="sae-grade na">En cours</span>
+        </div>
+        <div class="sae-title">Projet intégratif de S2</div>
+        <p class="sae-desc">Projet transversal mobilisant les trois compétences du semestre dans un contexte professionnel simulé.</p>
+        <div class="sae-tags"><span class="sae-tag">Administrer</span><span class="sae-tag">Connecter</span><span class="sae-tag">Programmer</span></div>
+      </div>
+
+      <div class="sae-card" onclick="openModal('sae205')">
+        <div class="sae-header">
+          <span class="sae-id">SAÉ 2.05</span>
+          <span class="sae-grade good">16.00</span>
+        </div>
+        <div class="sae-title">Portfolio — démarche réflexive</div>
+        <p class="sae-desc">Construction du portfolio personnel : fiche projet SAÉ 2.03 en anglais, justification des compétences acquises, poster de présentation.</p>
+        <div class="sae-tags"><span class="sae-tag">Portfolio</span><span class="sae-tag">Anglais</span><span class="sae-tag">Communication</span></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PAGE APPRENTISSAGES CRITIQUES -->
+<div class="page" id="page-ac">
+  <p class="section-eyebrow">Référentiel BUT R&amp;T</p>
+  <h2 class="section-title">Apprentissages Critiques (AC)</h2>
+  <p class="section-desc">Chaque compétence se décompose en Apprentissages Critiques : des savoir-faire précis que chaque SAÉ permet de valider progressivement. Voici ceux mobilisés cette année, classés par compétence.</p>
+
+  <div class="ac-comp-block">
+    <div class="ac-comp-header">
+      <span class="ac-comp-pill adm">Compétence 1 — Administrer</span>
+    </div>
+    <div class="ac-grid">
+      <div class="ac-card">
+        <div class="ac-code">AC0111</div>
+        <div class="ac-text">Identifier les besoins et les contraintes liés à une infrastructure réseau.</div>
+        <div class="ac-linked">↳ SAÉ1.02, SAÉ2.01</div>
+      </div>
+      <div class="ac-card">
+        <div class="ac-code">AC0112</div>
+        <div class="ac-text">Mettre en œuvre les équipements et protocoles d'un réseau local.</div>
+        <div class="ac-linked">↳ SAÉ1.02, SAÉ2.01</div>
+      </div>
+      <div class="ac-card">
+        <div class="ac-code">AC0113</div>
+        <div class="ac-text">Sécuriser les accès et les données d'un système informatique.</div>
+        <div class="ac-linked">↳ SAÉ1.01</div>
+      </div>
+      <div class="ac-card">
+        <div class="ac-code">AC0114</div>
+        <div class="ac-text">Installer et configurer un système d'exploitation et ses services.</div>
+        <div class="ac-linked">↳ SAÉ1.02, SAÉ2.03</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-comp-block">
+    <div class="ac-comp-header">
+      <span class="ac-comp-pill conn">Compétence 2 — Connecter</span>
+    </div>
+    <div class="ac-grid">
+      <div class="ac-card">
+        <div class="ac-code">AC0211</div>
+        <div class="ac-text">Caractériser un support de transmission filaire ou radio.</div>
+        <div class="ac-linked">↳ SAÉ1.03, SAÉ2.02</div>
+      </div>
+      <div class="ac-card">
+        <div class="ac-code">AC0212</div>
+        <div class="ac-text">Mesurer et interpréter les caractéristiques d'un signal.</div>
+        <div class="ac-linked">↳ SAÉ1.03, SAÉ2.02</div>
+      </div>
+      <div class="ac-card">
+        <div class="ac-code">AC0213</div>
+        <div class="ac-text">Relier un site ou un usager à un réseau d'opérateur.</div>
+        <div class="ac-linked">↳ SAÉ2.01</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-comp-block">
+    <div class="ac-comp-header">
+      <span class="ac-comp-pill prog">Compétence 3 — Programmer</span>
+    </div>
+    <div class="ac-grid">
+      <div class="ac-card">
+        <div class="ac-code">AC0311</div>
+        <div class="ac-text">Utiliser un système informatique et ses outils.</div>
+        <div class="ac-linked">↳ SAÉ1.04, SAÉ1.05, SAÉ2.03</div>
+      </div>
+      <div class="ac-card">
+        <div class="ac-code">AC0312</div>
+        <div class="ac-text">Lire, exécuter, corriger et modifier un programme.</div>
+        <div class="ac-linked">↳ SAÉ1.05, SAÉ2.03</div>
+      </div>
+      <div class="ac-card">
+        <div class="ac-code">AC0313</div>
+        <div class="ac-text">Traduire un algorithme dans un langage et pour un environnement donné.</div>
+        <div class="ac-linked">↳ SAÉ1.05, SAÉ2.03</div>
+      </div>
+      <div class="ac-card">
+        <div class="ac-code">AC0314</div>
+        <div class="ac-text">Connaître l'architecture et les technologies d'un site Web.</div>
+        <div class="ac-linked">↳ SAÉ1.04, SAÉ2.03</div>
+      </div>
+      <div class="ac-card">
+        <div class="ac-code">AC0315</div>
+        <div class="ac-text">Choisir les mécanismes de gestion de données adaptés au développement de l'outil.</div>
+        <div class="ac-linked">↳ SAÉ1.05, SAÉ2.03</div>
+      </div>
+      <div class="ac-card">
+        <div class="ac-code">AC0316</div>
+        <div class="ac-text">S'intégrer dans un environnement propice au développement et au travail collaboratif.</div>
+        <div class="ac-linked">↳ SAÉ2.03</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE OUTILS -->
+<div class="page" id="page-skills">
+  <p class="section-eyebrow">Compétences techniques</p>
+  <h2 class="section-title">Outils &amp; technologies</h2>
+  <p class="section-desc">Technologies et outils rencontrés au fil des cours et des SAÉ.</p>
+
+  <div class="skills-section">
+    <div class="skill-group">
+      <div class="skill-group-title">
+        <div class="skill-icon" style="background:rgba(79,110,247,.15);color:var(--accent)">🌐</div>
+        Réseaux
+      </div>
+      <div class="skill-item">Cisco IOS (routeurs / switchs)</div>
+      <div class="skill-item">Adressage IP / VLAN</div>
+      <div class="skill-item">Wireshark / diagnostic réseau</div>
+      <div class="skill-item">Services réseau (DHCP, DNS)</div>
+      <div class="skill-item">Câblage et équipements actifs</div>
+    </div>
+
+    <div class="skill-group">
+      <div class="skill-group-title">
+        <div class="skill-icon" style="background:rgba(249,112,102,.15);color:var(--coral)">💻</div>
+        Systèmes &amp; OS
+      </div>
+      <div class="skill-item">Linux (CLI, bash)</div>
+      <div class="skill-item">Windows / PowerShell</div>
+      <div class="skill-item">Virtualisation (VM)</div>
+      <div class="skill-item">Git / GitHub</div>
+    </div>
+
+    <div class="skill-group">
+      <div class="skill-group-title">
+        <div class="skill-icon" style="background:rgba(14,165,160,.15);color:var(--teal)">🐍</div>
+        Programmation
+      </div>
+      <div class="skill-item">Python</div>
+      <div class="skill-item">PyQt5 (interfaces graphiques)</div>
+      <div class="skill-item">HTML / CSS</div>
+      <div class="skill-item">SQL / bases de données</div>
+    </div>
+
+    <div class="skill-group">
+      <div class="skill-group-title">
+        <div class="skill-icon" style="background:rgba(124,58,237,.15);color:var(--accent2)">📡</div>
+        Transmission &amp; signal
+      </div>
+      <div class="skill-item">Analyse de signal</div>
+      <div class="skill-item">Câblage / connectique</div>
+      <div class="skill-item">Oscilloscope / mesures</div>
+      <div class="skill-item">Électronique de base</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE À PROPOS -->
+<div class="page" id="page-about">
+  <p class="section-eyebrow">Qui suis-je</p>
+  <h2 class="section-title">À propos de moi</h2>
+
+  <div class="about-grid">
+    <div>
+      <div class="about-avatar">TB</div>
+      <div class="about-name">Théo Bugli</div>
+      <div class="about-role">Étudiant BUT R&amp;T · IUT Colmar</div>
+      <p class="about-text">Étudiant en 1ère année de BUT Réseaux et Télécommunications à l'IUT de Colmar. Curieux et motivé par tout ce qui touche aux réseaux, à l'automatisation et au développement. Mon point fort : la programmation et le développement web.</p>
+      <ul class="info-list">
+        <li><span class="info-key">Né le</span> 08 août 2007</li>
+        <li><span class="info-key">Formation</span> BUT R&amp;T — Initiale</li>
+        <li><span class="info-key">Promo</span> RT11 / RT112</li>
+        <li><span class="info-key">Établissement</span> IUT de Colmar (UHA)</li>
+        <li><span class="info-key">N° étudiant</span> 22501115</li>
+        <li><span class="info-key">Sport</span> 14.50/20 (option)</li>
+      </ul>
+    </div>
+
+    <div class="about-right">
+      <p style="font-size:14px;font-weight:500;color:var(--muted);margin-bottom:1.25rem">Parcours académique</p>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-period">Sept. 2025 — Aujourd'hui</div>
+          <div class="tl-title">BUT Réseaux &amp; Télécommunications</div>
+          <div class="tl-sub">IUT de Colmar — Université de Haute-Alsace</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--dim)"></div>
+          <div class="tl-period">Avant 2025</div>
+          <div class="tl-title">Baccalauréat</div>
+          <div class="tl-sub">Diplôme obtenu, accès en BUT R&amp;T</div>
+        </div>
+      </div>
+
+      <p style="font-size:14px;font-weight:500;color:var(--muted);margin:2rem 0 1.25rem">Parcours professionnel</p>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--coral)"></div>
+          <div class="tl-period">Depuis mai 2026</div>
+          <div class="tl-title">La Ginguette — Restaurant</div>
+          <div class="tl-sub">Dorlisheim</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--accent2)"></div>
+          <div class="tl-period">Novembre 2025 — Janvier 2026</div>
+          <div class="tl-title">Casino de Ribeauvillé</div>
+          <div class="tl-sub">Poste saisonnier</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--coral)"></div>
+          <div class="tl-period">2021 — 2024</div>
+          <div class="tl-title">Sapeur-pompier volontaire</div>
+          <div class="tl-sub">Engagement citoyen et intervention</div>
+        </div>
+      </div>
+
+      <div style="margin-top:2rem">
+        <p style="font-size:14px;font-weight:500;color:var(--muted);margin-bottom:1rem">Langues</p>
+        <div style="display:flex;flex-direction:column;gap:.75rem">
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:14px">
+            <span>Français</span>
+            <span style="font-family:var(--mono);font-size:12px;color:var(--teal)">Natif</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:14px">
+            <span>Anglais</span>
+            <span style="font-family:var(--mono);font-size:12px;color:var(--accent)">Technique</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:14px">
+            <span>Allemand</span>
+            <span style="font-family:var(--mono);font-size:12px;color:var(--dim)">Option</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>© 2026 Théo Bugli · BUT R&T · IUT Colmar</footer>
+
+<!-- MODAL OVERLAY -->
+<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box" id="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script>
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-links button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  const btns=[...document.querySelectorAll('.nav-links button')];
+  const map={home:0,competences:1,sae:2,ac:3,skills:4,about:5};
+  btns[map[id]].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+const modalData = {
+  'comp-adm': `
+    <p class="modal-eyebrow">Compétence 1 · UE1.1 / UE2.1</p>
+    <h2 class="modal-title">Administrer les réseaux et l'Internet</h2>
+    <p class="modal-desc">Concevoir, déployer et maintenir des infrastructures réseau locales et étendues : équipements actifs, systèmes d'exploitation, cybersécurité.</p>
+
+    <div class="modal-section-label">Détail des matières — ce que ça développe</div>
+
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R1.01 — Initiation aux réseaux locaux</span><span class="res-detail-code">13.10</span></div>
+      <p class="res-detail-text">Bases du modèle OSI/TCP-IP, notion d'adressage et de commutation. Pose les fondations pour comprendre comment les machines communiquent dans un réseau local.</p>
+      <div class="res-detail-use">Utile pour : configurer et dépanner n'importe quel réseau d'entreprise.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R1.02 — Principes et architecture des réseaux</span><span class="res-detail-code">13.38</span></div>
+      <p class="res-detail-text">Architecture client-serveur, topologies, équipements d'interconnexion. Permet de comprendre comment structurer un réseau à plusieurs niveaux.</p>
+      <div class="res-detail-use">Utile pour : concevoir l'architecture réseau d'une entreprise.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R1.03 — Réseaux locaux et équipements actifs</span><span class="res-detail-code">09.07</span></div>
+      <p class="res-detail-text">Configuration pratique de switchs et routeurs, VLAN, spanning-tree. Développe la capacité à manipuler concrètement les équipements réseau.</p>
+      <div class="res-detail-use">Utile pour : administrer le matériel réseau physique d'une infrastructure.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R1.04 — Fondamentaux des systèmes électroniques</span><span class="res-detail-code">06.25</span></div>
+      <p class="res-detail-text">Bases de l'électronique numérique (portes logiques, bascules). Donne les fondations matérielles derrière le fonctionnement des systèmes informatiques.</p>
+      <div class="res-detail-use">Utile pour : comprendre le fonctionnement bas-niveau des équipements.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R1.06 — Architecture des systèmes numériques</span><span class="res-detail-code">09.53</span></div>
+      <p class="res-detail-text">Fonctionnement interne d'un ordinateur (processeur, mémoire, bus). Développe une vision système de la machine que l'on administre.</p>
+      <div class="res-detail-use">Utile pour : diagnostiquer des problèmes matériels et optimiser des configurations.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R1.08 — Bases des systèmes d'exploitation</span><span class="res-detail-code">11.40</span></div>
+      <p class="res-detail-text">Gestion de fichiers, processus, droits sous Linux/Windows. Compétence centrale pour tout administrateur système.</p>
+      <div class="res-detail-use">Utile pour : administrer des serveurs Linux ou Windows en entreprise.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R1.13 — Mathématiques du signal</span><span class="res-detail-code">04.75</span></div>
+      <p class="res-detail-text">Outils mathématiques (Fourier, fonctions périodiques) appliqués aux signaux. Sert de base théorique à la compréhension de la transmission de données.</p>
+      <div class="res-detail-use">Utile pour : analyser et dimensionner des liaisons de transmission.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R1.14 — Mathématiques des transmissions</span><span class="res-detail-code">00.10</span></div>
+      <p class="res-detail-text">Modulation, bruit, capacité d'un canal. Apporte les bases théoriques de la transmission numérique de l'information.</p>
+      <div class="res-detail-use">Utile pour : comprendre les limites physiques des réseaux (débit, portée).</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">SAÉ1.01 — Hygiène informatique et cybersécurité</span><span class="res-detail-code">14.00</span></div>
+      <p class="res-detail-text">Mise en pratique de la sécurisation d'un poste et d'un compte utilisateur.</p>
+      <div class="res-detail-use">Utile pour : sécuriser un parc informatique d'entreprise.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">SAÉ1.02 — S'initier aux réseaux informatiques</span><span class="res-detail-code">10.08</span></div>
+      <p class="res-detail-text">Mise en œuvre concrète d'un petit réseau local fonctionnel.</p>
+      <div class="res-detail-use">Utile pour : déployer un réseau pour une petite structure.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R2.02 — Administration système &amp; virtualisation</span><span class="res-detail-code">05.82</span></div>
+      <p class="res-detail-text">Création et gestion de machines virtuelles, bases de l'hyperviseur. Compétence indispensable pour héberger des services modernes.</p>
+      <div class="res-detail-use">Utile pour : déployer des serveurs virtualisés en entreprise.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R2.06 — Numérisation de l'information</span><span class="res-detail-code">03.83</span></div>
+      <p class="res-detail-text">Conversion analogique-numérique, codage de l'information. Explique comment l'information physique devient exploitable par un système.</p>
+      <div class="res-detail-use">Utile pour : comprendre l'acquisition de données dans des systèmes embarqués.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R2.12 — PPP : Formalisation du projet</span><span class="res-detail-code">10.95</span></div>
+      <p class="res-detail-text">Construction du projet professionnel personnel et préparation à l'insertion.</p>
+      <div class="res-detail-use">Utile pour : clarifier son orientation et préparer ses candidatures.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R2.13 — Mathématiques des systèmes numériques</span><span class="res-detail-code">04.00</span></div>
+      <p class="res-detail-text">Algèbre de Boole, systèmes de numération, matrices. Outils mathématiques pour l'analyse de systèmes numériques.</p>
+      <div class="res-detail-use">Utile pour : concevoir et analyser des circuits ou des protocoles numériques.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">SAE2.05 — Portfolio</span><span class="res-detail-code">16.00</span></div>
+      <p class="res-detail-text">Démarche réflexive de valorisation des compétences acquises.</p>
+      <div class="res-detail-use">Utile pour : présenter son parcours à un recruteur ou une école.</div>
+    </div>
+  `,
+  'comp-conn': `
+    <p class="modal-eyebrow">Compétence 2 · UE1.2 / UE2.2</p>
+    <h2 class="modal-title">Connecter les entreprises et les usagers</h2>
+    <p class="modal-desc">Mettre en œuvre les supports de transmission, les technologies radio et filaires, et connecter des entreprises aux réseaux opérateurs.</p>
+
+    <div class="modal-section-label">Détail des matières — ce que ça développe</div>
+
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R1.01 — Initiation aux réseaux locaux</span><span class="res-detail-code">13.10</span></div>
+      <p class="res-detail-text">Vue d'ensemble de la connexion d'une machine à un réseau, prérequis à toute notion de connectivité.</p>
+      <div class="res-detail-use">Utile pour : raccorder un poste ou un site à une infrastructure existante.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R1.03 — Réseaux locaux et équipements actifs</span><span class="res-detail-code">09.07</span></div>
+      <p class="res-detail-text">Manipulation des équipements qui assurent physiquement la connexion entre postes et réseau.</p>
+      <div class="res-detail-use">Utile pour : installer et raccorder le matériel réseau sur site.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R1.04 — Fondamentaux des systèmes électroniques</span><span class="res-detail-code">06.25</span></div>
+      <p class="res-detail-text">Comprendre l'électronique derrière les supports physiques de connexion.</p>
+      <div class="res-detail-use">Utile pour : diagnostiquer un problème de liaison physique.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R1.05 — Supports de transmission pour les réseaux locaux</span><span class="res-detail-code">10.63</span></div>
+      <p class="res-detail-text">Câbles cuivre, fibre optique, ondes radio : caractéristiques et choix selon le besoin. Cœur de la compétence connexion.</p>
+      <div class="res-detail-use">Utile pour : choisir le bon support de transmission selon la distance et le débit requis.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R1.13 — Mathématiques du signal</span><span class="res-detail-code">04.75</span></div>
+      <p class="res-detail-text">Bases théoriques pour comprendre comment un signal se propage et se dégrade sur un support.</p>
+      <div class="res-detail-use">Utile pour : anticiper les pertes et atténuations sur une liaison.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R1.14 — Mathématiques des transmissions</span><span class="res-detail-code">00.10</span></div>
+      <p class="res-detail-text">Modulation et capacité de canal appliquées à la connexion d'un usager à un réseau opérateur.</p>
+      <div class="res-detail-use">Utile pour : dimensionner une liaison opérateur (débit, bande passante).</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R1.15 — Gestion de projet</span><span class="res-detail-code">00.00</span></div>
+      <p class="res-detail-text">Méthodes de planification et de suivi appliquées à un projet de déploiement.</p>
+      <div class="res-detail-use">Utile pour : organiser un chantier de raccordement réseau en entreprise.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">SAÉ1.03 — Découvrir un dispositif de transmission</span><span class="res-detail-code">11.52</span></div>
+      <p class="res-detail-text">Application pratique : mesure et caractérisation d'un support de transmission réel.</p>
+      <div class="res-detail-use">Utile pour : valider la qualité d'une liaison avant mise en service.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R2.05 — Signaux et systèmes pour les transmissions</span><span class="res-detail-code">~</span></div>
+      <p class="res-detail-text">Approfondissement de l'analyse des signaux dans les systèmes de transmission.</p>
+      <div class="res-detail-use">Utile pour : analyser des liaisons radio ou filaires complexes.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R2.06 — Numérisation de l'information</span><span class="res-detail-code">03.83</span></div>
+      <p class="res-detail-text">Codage et conversion appliqués aux flux transmis sur le réseau opérateur.</p>
+      <div class="res-detail-use">Utile pour : comprendre le format des données échangées entre usager et réseau.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R2.13 — Mathématiques des systèmes numériques</span><span class="res-detail-code">04.00</span></div>
+      <p class="res-detail-text">Outils numériques appliqués à l'analyse des systèmes de connexion.</p>
+      <div class="res-detail-use">Utile pour : modéliser un système de transmission numérique.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R2.14 — Analyse mathématique des signaux</span><span class="res-detail-code">08.00</span></div>
+      <p class="res-detail-text">Approfondissement mathématique de l'analyse fréquentielle et temporelle d'un signal.</p>
+      <div class="res-detail-use">Utile pour : caractériser précisément une liaison de transmission.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">SAE2.02 — Mesurer et caractériser un signal</span><span class="res-detail-code">~</span></div>
+      <p class="res-detail-text">Mise en pratique des mesures de signal avec instruments dédiés.</p>
+      <div class="res-detail-use">Utile pour : valider techniquement une connexion avant déploiement.</div>
+    </div>
+  `,
+  'comp-prog': `
+    <p class="modal-eyebrow">Compétence 3 · UE1.3 / UE2.3</p>
+    <h2 class="modal-title">Créer des outils et applications pour les R&amp;T</h2>
+    <p class="modal-desc">Développer des applications web, des scripts d'automatisation et des outils de traitement de données adaptés aux environnements R&amp;T.</p>
+
+    <div class="modal-section-label">Détail des matières — ce que ça développe</div>
+
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R1.07 — Fondamentaux de la programmation</span><span class="res-detail-code">13.75</span></div>
+      <p class="res-detail-text">Logique algorithmique, variables, boucles, fonctions en Python. Base de toute compétence de développement.</p>
+      <div class="res-detail-use">Utile pour : écrire des scripts d'automatisation pour l'administration système.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R1.08 — Bases des systèmes d'exploitation</span><span class="res-detail-code">11.40</span></div>
+      <p class="res-detail-text">Manipulation de fichiers et processus en ligne de commande, utile pour exécuter et déboguer des programmes.</p>
+      <div class="res-detail-use">Utile pour : exécuter et tester ses scripts dans un environnement réel.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R1.09 — Introduction aux technologies Web</span><span class="res-detail-code">15.97</span></div>
+      <p class="res-detail-text">HTML, CSS, structure d'une page web. Premier contact avec le développement front-end.</p>
+      <div class="res-detail-use">Utile pour : créer des interfaces web pour exposer des données ou des outils.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R1.06 — Architecture des systèmes numériques</span><span class="res-detail-code">09.53</span></div>
+      <p class="res-detail-text">Compréhension de la machine sur laquelle le code s'exécute (mémoire, CPU).</p>
+      <div class="res-detail-use">Utile pour : optimiser des programmes selon les contraintes matérielles.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">SAÉ1.04 — Se présenter sur Internet</span><span class="res-detail-code">15.00</span></div>
+      <p class="res-detail-text">Mise en pratique du HTML/CSS à travers un site multi-pages avec navigation par ancres.</p>
+      <div class="res-detail-use">Utile pour : développer rapidement un site vitrine ou un CV en ligne.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">SAÉ1.05 — Traiter des données</span><span class="res-detail-code">15.50</span></div>
+      <p class="res-detail-text">Développement d'un outil complet en Python (interface graphique, traitement de fichiers, export JSON, script système).</p>
+      <div class="res-detail-use">Utile pour : automatiser des tâches d'administration avec une interface utilisateur.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R2.02 — Administration système &amp; virtualisation</span><span class="res-detail-code">05.82</span></div>
+      <p class="res-detail-text">Déploiement de l'environnement (VM) sur lequel une application développée doit tourner.</p>
+      <div class="res-detail-use">Utile pour : héberger soi-même une application web développée.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R2.07 — Sources de données</span><span class="res-detail-code">~</span></div>
+      <p class="res-detail-text">Identification et structuration des différentes sources de données exploitables (fichiers, bases, API).</p>
+      <div class="res-detail-use">Utile pour : choisir la bonne source de données pour une application.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R2.08 — Analyse et traitement de données structurées</span><span class="res-detail-code">~</span></div>
+      <p class="res-detail-text">Manipulation de données structurées (tables, requêtes), bases du modèle relationnel.</p>
+      <div class="res-detail-use">Utile pour : concevoir le schéma de base de données d'une application CRUD.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R2.09 — Initiation au développement Web</span><span class="res-detail-code">~</span></div>
+      <p class="res-detail-text">Programmation côté serveur, interaction entre une page web et une base de données.</p>
+      <div class="res-detail-use">Utile pour : développer un site web dynamique connecté à une base de données (CRUD).</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">R2.13 — Mathématiques des systèmes numériques</span><span class="res-detail-code">04.00</span></div>
+      <p class="res-detail-text">Bases logiques utiles à la structuration de requêtes et de conditions dans le code.</p>
+      <div class="res-detail-use">Utile pour : écrire des conditions et requêtes complexes dans une application.</div>
+    </div>
+    <div class="res-detail">
+      <div class="res-detail-head"><span class="res-detail-name">SAE2.03 — Solution informatique pour l'entreprise</span><span class="res-detail-code">~</span></div>
+      <p class="res-detail-text">Projet complet : site web CRUD connecté à une base de données, hébergé sur VM Linux. Voir la fiche SAÉ dédiée pour le détail.</p>
+      <div class="res-detail-use">Utile pour : mener un vrai projet de développement web de bout en bout, du serveur à l'interface.</div>
+    </div>
+  `,
+  'sae101': `
+    <p class="modal-eyebrow">SAÉ 1.01 · S1</p>
+    <h2 class="modal-title">Sensibilisation à l'hygiène informatique et à la cybersécurité</h2>
+    <div class="modal-meta"><span class="sae-grade good">Note : 14.00</span></div>
+    <p class="modal-desc">Sensibilisation aux bonnes pratiques de sécurité numérique au quotidien.</p>
+    <div class="modal-section-label">Contenu</div>
+    <ul class="modal-list">
+      <li>Gestion des mots de passe et authentification</li>
+      <li>Reconnaissance des tentatives de phishing</li>
+      <li>Mises à jour et gestion des vulnérabilités</li>
+      <li>Bonnes pratiques de gestion des accès</li>
+    </ul>
+  `,
+  'sae102': `
+    <p class="modal-eyebrow">SAÉ 1.02 · S1</p>
+    <h2 class="modal-title">S'initier aux réseaux informatiques</h2>
+    <div class="modal-meta"><span class="sae-grade">Note : 10.08</span></div>
+    <p class="modal-desc">Mise en place et configuration d'un réseau local simple.</p>
+    <div class="modal-section-label">Contenu</div>
+    <ul class="modal-list">
+      <li>Adressage IP et sous-réseaux</li>
+      <li>Configuration de switchs</li>
+      <li>Routage de base</li>
+      <li>Outils de diagnostic réseau</li>
+    </ul>
+  `,
+  'sae103': `
+    <p class="modal-eyebrow">SAÉ 1.03 · S1</p>
+    <h2 class="modal-title">Découvrir un dispositif de transmission</h2>
+    <div class="modal-meta"><span class="sae-grade">Note : 11.52</span></div>
+    <p class="modal-desc">Étude et mesure d'un système de transmission de données.</p>
+    <div class="modal-section-label">Contenu</div>
+    <ul class="modal-list">
+      <li>Analyse du signal sur un support de transmission</li>
+      <li>Caractérisation d'un câble ou d'un lien radio</li>
+      <li>Mesures pratiques en laboratoire</li>
+    </ul>
+  `,
+  'sae104': `
+    <p class="modal-eyebrow">SAÉ 1.04 · S1</p>
+    <h2 class="modal-title">Se présenter sur Internet — CV Web</h2>
+    <div class="modal-meta"><span class="sae-grade good">Note : 15.00</span></div>
+    <p class="modal-desc">Création d'une page web de CV personnel accompagnée d'au moins deux pages de détail, le tout mis en forme par une feuille de style CSS unique.</p>
+    <div class="modal-section-label">Structure réalisée</div>
+    <ul class="modal-list">
+      <li>Header avec photo, informations personnelles et résumé professionnel</li>
+      <li>Section formation avec liens ancrés vers une page de détail</li>
+      <li>Section diplômes avec liens vers les établissements</li>
+      <li>Section expériences professionnelles</li>
+      <li>Section compétences en flexbox (RT, techniques, humaines)</li>
+      <li>Section informations diverses (langues, hobbies, activités)</li>
+    </ul>
+    <div class="modal-section-label">Technique</div>
+    <ul class="modal-list">
+      <li>Navigation par ancres (id / href#)</li>
+      <li>Défilement doux (scroll-behavior: smooth)</li>
+      <li>Multi-pages avec liens locaux sur Codepen</li>
+    </ul>
+  `,
+  'sae105': `
+    <p class="modal-eyebrow">SAÉ 1.05 · S1</p>
+    <h2 class="modal-title">Traiter des données — Outil de reporting</h2>
+    <div class="modal-meta"><span class="sae-grade good">Note : 15.50</span></div>
+    <p class="modal-desc">Développement d'un outil de reporting capable de localiser les gros fichiers d'un disque, pour aider un administrateur système à libérer de l'espace.</p>
+    <div class="modal-section-label">Fonctionnement</div>
+    <ul class="modal-list">
+      <li>Sélection du répertoire de base via PyQt5 (QFileDialog)</li>
+      <li>Analyse récursive de l'arborescence avec pathlib</li>
+      <li>Tri des fichiers par taille décroissante et export JSON</li>
+      <li>Affichage graphique en camembert (PyQtChart) avec légendes paginées sur onglets</li>
+      <li>Génération d'un script PowerShell de suppression des fichiers sélectionnés</li>
+    </ul>
+    <div class="modal-section-label">Outils utilisés</div>
+    <ul class="modal-list">
+      <li>Python, pathlib, json</li>
+      <li>PyQt5 / PyQtChart (interface graphique)</li>
+      <li>PowerShell (script de lancement et de suppression)</li>
+    </ul>
+  `,
+  'sae201': `
+    <p class="modal-eyebrow">SAÉ 2.01 · S2</p>
+    <h2 class="modal-title">Construire un réseau informatique pour une petite structure</h2>
+    <div class="modal-meta"><span class="sae-grade na">En cours</span></div>
+    <p class="modal-desc">Conception et déploiement d'une infrastructure réseau complète adaptée à une petite entreprise.</p>
+    <div class="modal-section-label">Contenu</div>
+    <ul class="modal-list">
+      <li>Routage et segmentation VLAN</li>
+      <li>Mise en place des services réseau essentiels</li>
+      <li>Sécurisation de l'accès</li>
+    </ul>
+  `,
+  'sae202': `
+    <p class="modal-eyebrow">SAÉ 2.02 · S2</p>
+    <h2 class="modal-title">Mesurer et caractériser un signal ou un système</h2>
+    <div class="modal-meta"><span class="sae-grade na">En cours</span></div>
+    <p class="modal-desc">Utilisation d'instruments de mesure pour caractériser un signal de transmission.</p>
+    <div class="modal-section-label">Contenu</div>
+    <ul class="modal-list">
+      <li>Analyse fréquentielle et temporelle d'un signal</li>
+      <li>Utilisation d'un oscilloscope</li>
+      <li>Interprétation des mesures</li>
+    </ul>
+  `,
+  'sae203': `
+    <p class="modal-eyebrow">SAÉ 2.03 · S2 — Projet groupe</p>
+    <h2 class="modal-title">Mettre en place une solution informatique pour l'entreprise</h2>
+    <div class="modal-meta"><span class="sae-grade na">En cours</span></div>
+    <p class="modal-desc">Conception et déploiement d'un site web permettant d'alimenter, consulter et manipuler un schéma de données métier, hébergé sur une VM Linux configurée de A à Z avec son propre serveur de base de données. Projet réalisé en groupe de 3 étudiants.</p>
+    <div class="modal-section-label">Apprentissages critiques visés</div>
+    <ul class="modal-list">
+      <li>Utiliser un système informatique et ses outils</li>
+      <li>Lire, exécuter, corriger et modifier un programme</li>
+      <li>Traduire un algorithme dans un langage et un environnement donnés</li>
+      <li>Connaître l'architecture et les technologies d'un site web</li>
+      <li>Choisir les mécanismes de gestion de données adaptés</li>
+      <li>S'intégrer dans un environnement de travail collaboratif</li>
+    </ul>
+    <div class="modal-section-label">Livrables</div>
+    <div class="modal-deliv">
+      <div class="modal-deliv-title">Planning &amp; Gantt</div>
+      <div class="modal-deliv-desc">Répartition des tâches et du temps sur la durée du projet (groupe)</div>
+    </div>
+    <div class="modal-deliv">
+      <div class="modal-deliv-title">Procédure d'installation et de déploiement</div>
+      <div class="modal-deliv-desc">Document de 2 à 5 pages expliquant la conception de la solution (groupe)</div>
+    </div>
+    <div class="modal-deliv">
+      <div class="modal-deliv-title">Fiche de projet portfolio</div>
+      <div class="modal-deliv-desc">Résumé en anglais et justification des compétences acquises (individuel)</div>
+    </div>
+    <div class="modal-deliv">
+      <div class="modal-deliv-title">Présentation orale</div>
+      <div class="modal-deliv-desc">5 minutes de démo, 10 minutes de questions (groupe)</div>
+    </div>
+    <div class="modal-deliv">
+      <div class="modal-deliv-title">Dépôt GitHub</div>
+      <div class="modal-deliv-desc">Code complet, schéma de base de données, Gantt et présentation (groupe)</div>
+    </div>
+  `,
+  'sae204': `
+    <p class="modal-eyebrow">SAÉ 2.04 · S2</p>
+    <h2 class="modal-title">Projet intégratif de S2</h2>
+    <div class="modal-meta"><span class="sae-grade na">En cours</span></div>
+    <p class="modal-desc">Projet transversal mobilisant les trois compétences (administrer, connecter, programmer) du semestre dans un contexte professionnel simulé.</p>
+  `,
+  'sae205': `
+    <p class="modal-eyebrow">SAÉ 2.05 · S2</p>
+    <h2 class="modal-title">Portfolio — démarche réflexive</h2>
+    <div class="modal-meta"><span class="sae-grade good">Note : 16.00</span></div>
+    <p class="modal-desc">Construction et structuration du portfolio personnel de compétences.</p>
+    <div class="modal-section-label">Contenu</div>
+    <ul class="modal-list">
+      <li>Fiche de projet de la SAÉ 2.03 rédigée en anglais</li>
+      <li>Justification de l'acquisition des compétences</li>
+      <li>Réalisation d'un poster de présentation</li>
+    </ul>
+  `
+};
+
+function openModal(key){
+  document.getElementById('modal-content').innerHTML = modalData[key] || '';
+  document.getElementById('modal-overlay').classList.add('open');
+  document.getElementById('modal-box').scrollTop = 0;
+}
+function closeModal(){
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+</script>
+</body>
+</html>
